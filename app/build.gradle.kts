@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.android.application)
+    id(libs.plugins.android.application.get().pluginId)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
@@ -38,6 +38,10 @@ android {
         compose = true
     }
 }
+
+
+
+
 
 dependencies {
 

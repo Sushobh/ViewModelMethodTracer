@@ -21,4 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "demo"
 include(":app")
-include(":methodlogger")
+include(":methodlogger2")
+include(":loggerplugin")
+

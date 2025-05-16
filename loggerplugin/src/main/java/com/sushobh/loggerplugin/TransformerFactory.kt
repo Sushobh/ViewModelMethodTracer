@@ -1,4 +1,4 @@
-package com.sushobh.methodlogger
+package com.sushobh.loggerplugin
 
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.ClassContext

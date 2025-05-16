@@ -1,4 +1,4 @@
-package com.sushobh.methodlogger
+package com.sushobh.loggerplugin
 
 import org.objectweb.asm.*
 
@@ -38,8 +38,8 @@ class ViewModelMethodLoggerVisitor(
                 visitLdcInsn("ViewModelMethodLogger $className.$name called")
                 visitMethodInsn(
                     Opcodes.INVOKESTATIC,
-                    "android/util/Log",
-                    "d",
+                    "com/sushobh/methodlogger2/LogReceiver",
+                    "onMethodLogged",
                     "(Ljava/lang/String;Ljava/lang/String;)I",
                     false
                 )

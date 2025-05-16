@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.sushobh"
-version = "2.0.0"
+version = "6.0.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -36,11 +36,4 @@ gradlePlugin {
         }
     }
 }
-publishing {
-    repositories {
-        maven {
-            name = "localPluginRepository"
-            url = uri("D://mavenRepoLocal")
-        }
-    }
-}
+

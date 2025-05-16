@@ -10,11 +10,9 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         mavenLocal()
-        maven(url = file("D://mavenRepoLocal"))
     }
-
     plugins {
-        id("loggerplugin") version "2.0.0"
+        id("loggerplugin") version "6.0.0"
     }
 }
 

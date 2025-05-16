@@ -34,16 +34,15 @@ class ViewModelMethodLoggerVisitor(
         return object : MethodVisitor(Opcodes.ASM9, mv) {
             override fun visitCode() {
                 super.visitCode()
-                visitLdcInsn("VM")
-                visitLdcInsn("ViewModelMethodLogger $className.$name called")
+                visitLdcInsn(className) // First parameter
+                visitLdcInsn("$name called") // Second parameter
                 visitMethodInsn(
                     Opcodes.INVOKESTATIC,
-                    "com/sushobh/methodlogger2/LogReceiver",
-                    "onMethodLogged",
-                    "(Ljava/lang/String;Ljava/lang/String;)I",
+                    "com/sushobh/methodlogger2/LogReceiverKt", // top-level file name becomes class
+                    "onMethodLogged", // function name
+                    "(Ljava/lang/String;Ljava/lang/String;)V", // descriptor: two Strings, returns void
                     false
                 )
-                visitInsn(Opcodes.POP)
             }
         }
     }

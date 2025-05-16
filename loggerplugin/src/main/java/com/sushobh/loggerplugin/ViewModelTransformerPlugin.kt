@@ -9,23 +9,22 @@ class ViewModelTransformerPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         project.subprojects {
             plugins.withId("com.android.application") {
-                val androidComponents = project.extensions.getByType(AndroidComponentsExtension::class.java)
-                androidComponents.onVariants { variant ->
-                    variant.instrumentation.transformClassesWith(
-                        ViewModelTransformerFactory::class.java,
-                        InstrumentationScope.PROJECT
-                    ) { /* no params */ }
-                }
+                setupTransformer()
             }
             plugins.withId("com.android.library") {
-                val androidComponents = project.extensions.getByType(AndroidComponentsExtension::class.java)
-                androidComponents.onVariants { variant ->
-                    variant.instrumentation.transformClassesWith(
-                        ViewModelTransformerFactory::class.java,
-                        InstrumentationScope.PROJECT
-                    ) { /* no params */ }
-                }
+                setupTransformer()
             }
         }
     }
+
+    private fun Project.setupTransformer() {
+        val androidComponents = extensions.getByType(AndroidComponentsExtension::class.java)
+        androidComponents.onVariants { variant ->
+            variant.instrumentation.transformClassesWith(
+                ViewModelTransformerFactory::class.java,
+                InstrumentationScope.PROJECT
+            ) { /* no params */ }
+        }
+    }
+
 }

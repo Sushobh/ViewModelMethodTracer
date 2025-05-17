@@ -63,6 +63,6 @@ internal class SimpleTextAdapter :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.textView.text =
-            "${getItem(position).className} ${getItem(position).methodName} (${getItem(position).count})"
+            "${getItem(position).displayableClassName()} ${getItem(position).methodName} (${getItem(position).count})"
     }
 }

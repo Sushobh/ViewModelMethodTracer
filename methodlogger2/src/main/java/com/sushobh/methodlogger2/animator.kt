@@ -3,7 +3,7 @@ package com.sushobh.methodlogger2
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 
-class FadeInItemAnimator : DefaultItemAnimator() {
+internal class FadeInItemAnimator : DefaultItemAnimator() {
     override fun animateChange(oldHolder: RecyclerView.ViewHolder, newHolder: RecyclerView.ViewHolder,
                                fromLeft: Int, fromTop: Int, toLeft: Int, toTop: Int): Boolean {
         newHolder.itemView.alpha = 0f

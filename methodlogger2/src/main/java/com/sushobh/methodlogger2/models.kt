@@ -9,7 +9,7 @@ internal data class LogViewItem(
 internal fun LogViewItem.displayableClassName() : String {
     return className.split("/").last()
 }
-open class LogItem(
+internal open class LogItem(
     open val className: String,
     open val methodName: String,
     open val loggedTime: Instant = Instant.now()

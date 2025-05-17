@@ -1,6 +1,6 @@
 package com.sushobh.methodlogger2
 
-class DoublyLinkedList<T> {
+internal class DoublyLinkedList<T> {
 
     inner class Node<T>(var value: T) {
         var prev: Node<T>? = null

@@ -12,7 +12,7 @@ pluginManagement {
         mavenLocal()
     }
     plugins {
-        id("loggerplugin") version "6.0.0"
+       // id("loggerplugin") version "6.0.0"
     }
 }
 

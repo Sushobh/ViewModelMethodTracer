@@ -5,5 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
     alias(libs.plugins.android.library) apply false
-    id("loggerplugin")
+    id("com.vanniktech.maven.publish") version "0.32.0" apply false
+    //id("loggerplugin") version "8.0.0"
+    id("com.sushobh.method-logger-plugin") version "1.0.0"
 }

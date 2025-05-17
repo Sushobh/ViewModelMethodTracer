@@ -38,11 +38,6 @@ class MainActivity : ComponentActivity() {
                      delay(2000)
                      viewModel.randomMethodName1()
                      viewModel.randomMethodName2()
-//                    val random = (1..2).random()
-//                    when (random) {
-//                        1 -> viewModel.randomMethodName1()
-//                        2 -> viewModel.randomMethodName2()
-//                    }
                 }
             }
         }
@@ -54,7 +49,9 @@ class MainActivity : ComponentActivity() {
                         Column(modifier = Modifier.fillMaxSize()) {
                             Greeting(
                                 name = "Android",
-                                modifier = Modifier.padding(innerPadding)
+                                modifier = Modifier.padding(innerPadding).clickable {
+                                    viewModel.randomMethodName5()
+                                }
                             )
                         }
                     }

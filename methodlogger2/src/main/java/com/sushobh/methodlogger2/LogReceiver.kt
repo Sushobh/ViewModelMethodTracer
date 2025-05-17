@@ -1,5 +1,7 @@
 package com.sushobh.methodlogger2
 
+import LogItem
+import LogViewItem
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
@@ -10,6 +12,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
@@ -30,20 +33,6 @@ fun onMethodLogged(className: String, methodName: String) {
     MethodLogger.onMethodLogged(LogItem(className, methodName))
 }
 
-internal data class LogViewItem(
-    override var className: String,
-    override var methodName: String,
-    var count: Int
-) : LogItem(className, methodName)
-
-internal fun LogViewItem.displayableClassName() : String {
-    return className.split("/").last()
-}
-open class LogItem(
-    open val className: String,
-    open val methodName: String,
-    open val loggedTime: Instant = Instant.now()
-)
 
 @SuppressLint("StaticFieldLeak")
 object MethodLogger {
@@ -68,21 +57,21 @@ object MethodLogger {
             }
 
             override fun onActivityStarted(p0: Activity) {
+
+            }
+
+            override fun onActivityResumed(p0: Activity) {
                 currentActivity = WeakReference(p0)
                 onStartLogging()
             }
 
-            override fun onActivityResumed(p0: Activity) {
-
-            }
-
             override fun onActivityPaused(p0: Activity) {
-
+                currentActivity = WeakReference(null)
+                onStopLogging()
             }
 
             override fun onActivityStopped(p0: Activity) {
-                currentActivity = WeakReference(null)
-                onStopLogging()
+
             }
 
             override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) {
@@ -115,7 +104,7 @@ object MethodLogger {
         }
         adapter = SimpleTextAdapter()
         recyclerView?.adapter = adapter
-
+        recyclerView?.itemAnimator = FadeInItemAnimator()
         windowManager?.addView(overlayView, params)
         observeItems()
     }
@@ -123,7 +112,7 @@ object MethodLogger {
     private fun observeItems() {
         scope = CoroutineScope(Dispatchers.Main)
         scope?.launch {
-            itemFlow.groupedDebounce(1000).collect { newList ->
+            itemFlow.groupedDebounce(1000,20).collect { newList : List<LogViewItem> ->
                 scope?.launch {
                     withContext(Dispatchers.Main){
                         adapter?.submitList(newList)
@@ -146,26 +135,3 @@ object MethodLogger {
     }
 }
 
-private fun Flow<LogItem>.groupedDebounce(durationMs: Long, size: Int = 20) =
-    channelFlow {
-        val items = ArrayDeque<LogViewItem>()
-        launch {
-            while (isActive) {
-                delay(durationMs)
-                send(items.map { it.copy() })
-            }
-        }
-
-        collect { item ->
-            val existingItem =
-                items.find { it.className == item.className && it.methodName == item.methodName }
-            if (existingItem != null) {
-                existingItem.count += 1
-            } else {
-                if (items.size > size) {
-                    items.removeFirst()
-                }
-                items.addLast(LogViewItem(item.className, item.methodName, 1))
-            }
-        }
-    }

@@ -24,4 +24,8 @@ class MainViewModel : ViewModel(){
 
     }
 
+    fun randomMethodName5(){
+
+    }
+
 }

@@ -6,7 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:textColor="#8033FF33"
+        android:textSize="15sp"
+        android:textColor="#FFFFFF"
         android:id="@+id/text_view"
         android:layout_margin="10dp"
         tools:text="onButtonClicked"

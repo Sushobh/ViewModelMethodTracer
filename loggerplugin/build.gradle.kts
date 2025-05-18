@@ -45,7 +45,7 @@ gradlePlugin {
 }
 
 mavenPublishing {
-    coordinates("com.sushobh", "method-logger-plugin", "1.0.0")
+    coordinates("com.sushobh", "method-logger-plugin", "1.0.1")
 
     pom {
         name.set("Method Logger")

@@ -8,10 +8,14 @@ import android.app.Application
 import android.app.Application.ActivityLifecycleCallbacks
 import android.content.Context
 import android.graphics.PixelFormat
+import android.media.Image
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.widget.ImageButton
+import androidx.constraintlayout.widget.Group
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +32,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.ref.WeakReference
 import java.time.Instant
+import androidx.core.view.isVisible
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlin.math.log
 
 fun onMethodLogged(className: String, methodName: String) {
     MethodLogger.onMethodLogged(LogItem(className, methodName))
@@ -47,6 +54,8 @@ object MethodLogger {
     private var adapter: SimpleTextAdapter? = null
     private var scope: CoroutineScope? = null
     private var recyclerView: RecyclerView? = null
+    private var groupOfViews : Group? = null
+    private var logListToggleButton : LogListToggleButton? = null
 
 
     fun setUpLogger(appContext: Application) {
@@ -87,6 +96,12 @@ object MethodLogger {
     private fun onStartLogging() {
         windowManager =
             currentActivity.get()!!.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        setUpLoggerView()
+        setUpToggleView()
+        observeItems()
+    }
+
+    private fun setUpLoggerView(){
         overlayView = LayoutInflater.from(context!!).inflate(R.layout.layout_list2, null)
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
@@ -99,6 +114,8 @@ object MethodLogger {
             PixelFormat.TRANSLUCENT
         )
         recyclerView = overlayView!!.findViewById<RecyclerView>(R.id.list_view)
+        groupOfViews = overlayView!!.findViewById<Group>(R.id.view_group)
+
         recyclerView?.layoutManager = LinearLayoutManager(currentActivity.get()!!).apply {
             stackFromEnd = true
         }
@@ -106,7 +123,24 @@ object MethodLogger {
         recyclerView?.adapter = adapter
         recyclerView?.itemAnimator = FadeInItemAnimator()
         windowManager?.addView(overlayView, params)
-        observeItems()
+    }
+
+    private fun setUpToggleView(){
+        val rootView = LayoutInflater.from(context!!).inflate(R.layout.view_toggle, null)
+        logListToggleButton =  rootView as LogListToggleButton
+        logListToggleButton?.setUpWithWindowManager(windowManager)
+
+        logListToggleButton?.setOnClickListener {
+            groupOfViews?.let {
+                if (it.isVisible) {
+                    logListToggleButton?.setImageResource(R.drawable.baseline_open_in_new_24)
+                    it.visibility = View.GONE
+                } else {
+                    it.visibility = View.VISIBLE
+                    logListToggleButton?.setImageResource(R.drawable.baseline_close_24)
+                }
+            }
+        }
     }
 
     private fun observeItems() {
@@ -128,9 +162,10 @@ object MethodLogger {
 
     private fun onStopLogging() {
         windowManager?.removeView(overlayView)
+        windowManager?.removeView(logListToggleButton)
         overlayView = null
+        logListToggleButton = null
         windowManager = null
-        recyclerView = null
         scope?.cancel()
     }
 }

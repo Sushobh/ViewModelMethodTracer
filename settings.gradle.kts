@@ -11,9 +11,6 @@ pluginManagement {
         gradlePluginPortal()
         mavenLocal()
     }
-    plugins {
-       // id("loggerplugin") version "6.0.0"
-    }
 }
 
 

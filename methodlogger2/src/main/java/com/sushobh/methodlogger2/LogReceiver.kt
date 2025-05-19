@@ -108,6 +108,7 @@ object MethodLogger {
             WindowManager.LayoutParams.MATCH_PARENT, // Thin view height
             WindowManager.LayoutParams.TYPE_APPLICATION, // App-local only
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
                     WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
             PixelFormat.TRANSLUCENT
@@ -134,9 +135,17 @@ object MethodLogger {
                 if (it.isVisible) {
                     logListToggleButton?.setImageResource(R.drawable.baseline_open_in_new_24)
                     it.visibility = View.GONE
+                    with(overlayView?.layoutParams as WindowManager.LayoutParams){
+                        flags = flags or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                        windowManager?.updateViewLayout(overlayView,this)
+                    }
                 } else {
                     it.visibility = View.VISIBLE
                     logListToggleButton?.setImageResource(R.drawable.baseline_close_24)
+                    with(overlayView?.layoutParams as WindowManager.LayoutParams){
+                        flags = flags and WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE.inv()
+                        windowManager?.updateViewLayout(overlayView,this)
+                    }
                 }
             }
         }

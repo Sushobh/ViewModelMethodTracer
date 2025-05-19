@@ -146,7 +146,7 @@ object MethodLogger {
     private fun observeItems() {
         scope = CoroutineScope(Dispatchers.Main)
         scope?.launch {
-            itemFlow.groupedDebounce(1000,20).collect { newList : List<LogViewItem> ->
+            itemFlow.groupedDebounce(1000,20).collect { newList : List<Any> ->
                 scope?.launch {
                     withContext(Dispatchers.Main){
                         adapter?.submitList(newList)

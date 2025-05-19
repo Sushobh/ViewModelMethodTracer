@@ -6,6 +6,8 @@ internal data class LogViewItem(
     var count: Int
 ) : LogItem(className, methodName)
 
+internal data class LogViewItemHeader(val className: String)
+
 internal fun LogViewItem.displayableClassName() : String {
     return className.split("/").last()
 }

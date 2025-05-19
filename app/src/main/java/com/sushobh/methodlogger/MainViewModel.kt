@@ -4,27 +4,27 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel(){
 
-    fun randomMethodName1(){
+    fun mainRandomMethodName1(){
         repeat(3) {
-            randomMethodName3()
+            mainRandomMethodName3()
         }
     }
 
-    fun randomMethodName2(){
+    fun mainRandomMethodName2(){
          repeat(3) {
-             randomMethodName4()
+             mainRandomMethodName4()
          }
     }
 
-    fun randomMethodName3(){
+    fun mainRandomMethodName3(){
 
     }
 
-    fun randomMethodName4(){
+    fun mainRandomMethodName4(){
 
     }
 
-    fun randomMethodName5(){
+    fun mainRandomMethodName5(){
 
     }
 

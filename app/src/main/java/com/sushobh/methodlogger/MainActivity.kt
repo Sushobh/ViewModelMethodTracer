@@ -25,7 +25,9 @@ import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
-    val viewModel: MainViewModel by viewModels()
+    val viewModel: MainViewModel = MainViewModel()
+    val launcherViewModel : LauncherViewModel = LauncherViewModel()
+    val loginViewModel : LoginViewModel = LoginViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +38,12 @@ class MainActivity : ComponentActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 while (true) {
                      delay(2000)
-                     viewModel.randomMethodName1()
-                     viewModel.randomMethodName2()
+                     viewModel.mainRandomMethodName1()
+                     viewModel.mainRandomMethodName2()
+                     launcherViewModel.launchRandomMethodName1()
+                     launcherViewModel.launchRandomMethodName2()
+                     loginViewModel.loginRandomMethodName1()
+                     loginViewModel.loginRandomMethodName2()
                 }
             }
         }
@@ -50,7 +56,9 @@ class MainActivity : ComponentActivity() {
                             Greeting(
                                 name = "Android",
                                 modifier = Modifier.padding(innerPadding).clickable {
-                                    viewModel.randomMethodName5()
+                                    viewModel.mainRandomMethodName5()
+                                    loginViewModel.loginRandomMethodName5()
+                                    launcherViewModel.launchRandomMethodName5()
                                 }
                             )
                         }

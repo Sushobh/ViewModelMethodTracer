@@ -108,7 +108,6 @@ object MethodLogger {
             WindowManager.LayoutParams.MATCH_PARENT, // Thin view height
             WindowManager.LayoutParams.TYPE_APPLICATION, // App-local only
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
                     WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
             PixelFormat.TRANSLUCENT
@@ -117,7 +116,7 @@ object MethodLogger {
         groupOfViews = overlayView!!.findViewById<Group>(R.id.view_group)
 
         recyclerView?.layoutManager = LinearLayoutManager(currentActivity.get()!!).apply {
-            stackFromEnd = true
+
         }
         adapter = SimpleTextAdapter()
         recyclerView?.adapter = adapter

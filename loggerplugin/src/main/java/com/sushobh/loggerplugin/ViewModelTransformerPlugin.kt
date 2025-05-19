@@ -13,7 +13,7 @@ class ViewModelTransformerPlugin : Plugin<Project> {
             plugins.withId("com.android.application") {
                 setupTransformer()
                 afterEvaluate {
-                    dependencies.add("implementation", "com.sushobh:method-logger:1.0.3")
+                    dependencies.add("implementation", "com.sushobh:method-logger:1.0.4")
                 }
             }
             plugins.withId("com.android.library") {

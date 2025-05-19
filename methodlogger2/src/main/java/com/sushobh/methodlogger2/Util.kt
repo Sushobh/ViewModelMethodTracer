@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 internal fun Flow<LogItem>.groupedDebounce(durationMs: Long, size: Int = 20) =
     channelFlow {
-        val logItemHashMap = HashMap<String,DoublyLinkedList<LogViewItem>>()
+        val logItemHashMap = HashMap<String, DoublyLinkedList<LogViewItem>>()
         launch {
             while (isActive) {
                 delay(durationMs)
@@ -21,7 +21,7 @@ internal fun Flow<LogItem>.groupedDebounce(durationMs: Long, size: Int = 20) =
 
         collect { item ->
 
-            if(!logItemHashMap.containsKey(item.className)){
+            if (!logItemHashMap.containsKey(item.className)) {
                 logItemHashMap[item.className] = DoublyLinkedList()
             }
             val itemsForViewModel = logItemHashMap[item.className]!!
@@ -41,9 +41,13 @@ internal fun Flow<LogItem>.groupedDebounce(durationMs: Long, size: Int = 20) =
         }
     }
 
-private fun flattenLogItemHashMap(items : Map<String,DoublyLinkedList<LogViewItem>>) : List<Any>{
-    return items.map { it.key }.filter { items.getOrDefault(it, DoublyLinkedList()).getSize() > 0 }.flatMap {
-        listOf(LogViewItemHeader(it)).map { it.copy() } + items.getOrDefault(it, DoublyLinkedList()).toList().map { it.copy() }.
-                   sortedByDescending { it.loggedTime }.take(7) }.toMutableList()
+private fun flattenLogItemHashMap(items: Map<String, DoublyLinkedList<LogViewItem>>): List<Any> {
+    return items.map { it.key }.filter { items.getOrDefault(it, DoublyLinkedList()).getSize() > 0 }
+        .flatMap {
+            listOf(LogViewItemHeader(it)).map { it.copy() } + items.getOrDefault(
+                it,
+                DoublyLinkedList()
+            ).toList().map { it.copy() }.sortedByDescending { it.loggedTime }.take(7)
+        }.toMutableList()
 }
 

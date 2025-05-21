@@ -64,14 +64,17 @@ internal class DoublyLinkedList<T> {
                 head = null
                 tail = null
             }
+
             node.prev == null -> { // node is head
                 head = node.next
                 head?.prev = null
             }
+
             node.next == null -> { // node is tail
                 tail = node.prev
                 tail?.next = null
             }
+
             else -> {
                 node.prev?.next = node.next
                 node.next?.prev = node.prev
@@ -92,7 +95,7 @@ internal class DoublyLinkedList<T> {
         return null
     }
 
-    fun getSize() : Int {
+    fun getSize(): Int {
         return toList().size
     }
 

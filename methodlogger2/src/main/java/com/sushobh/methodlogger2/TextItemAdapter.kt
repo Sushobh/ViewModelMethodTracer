@@ -9,14 +9,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import displayableClassName
 
 internal class LogDiffCallback : DiffUtil.ItemCallback<Any>() {
     override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-        if(oldItem is LogViewItemHeader && newItem is LogViewItemHeader){
+        if (oldItem is LogViewItemHeader && newItem is LogViewItemHeader) {
             return oldItem.className == newItem.className
         }
-        if(oldItem is LogViewItem && newItem is LogViewItem){
+        if (oldItem is LogViewItem && newItem is LogViewItem) {
             return oldItem.className == newItem.className && oldItem.methodName == newItem.methodName
         }
 
@@ -24,10 +23,10 @@ internal class LogDiffCallback : DiffUtil.ItemCallback<Any>() {
     }
 
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
-        if(oldItem is LogViewItemHeader && newItem is LogViewItemHeader){
+        if (oldItem is LogViewItemHeader && newItem is LogViewItemHeader) {
             return oldItem.className == newItem.className
         }
-        if(oldItem is LogViewItem && newItem is LogViewItem){
+        if (oldItem is LogViewItem && newItem is LogViewItem) {
             return oldItem.count == newItem.count
         }
         return false
@@ -44,7 +43,7 @@ internal class SimpleTextAdapter :
     }
 
     override fun getItemViewType(position: Int): Int {
-        when(getItem(position)) {
+        when (getItem(position)) {
             is LogViewItemHeader -> return 0
             is LogViewItem -> return 1
         }
@@ -53,12 +52,13 @@ internal class SimpleTextAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
-        when(viewType) {
+        when (viewType) {
             0 -> {
                 val itemView = LayoutInflater.from(parent.context)
                     .inflate(R.layout.list_item_header, parent, false)
                 return ViewHolder(itemView)
             }
+
             1 -> {
                 val itemView = LayoutInflater.from(parent.context)
                     .inflate(R.layout.list_item, parent, false)
@@ -72,11 +72,12 @@ internal class SimpleTextAdapter :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
 
-        when(item) {
+        when (item) {
             is LogViewItemHeader -> {
                 holder.textView.text = item.className
                 return
             }
+
             is LogViewItem -> {
                 holder.textView.text =
                     "${item.methodName} (${item.count})"

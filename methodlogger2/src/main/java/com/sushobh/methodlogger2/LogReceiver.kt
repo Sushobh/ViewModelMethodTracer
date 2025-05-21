@@ -1,40 +1,28 @@
 package com.sushobh.methodlogger2
 
 import LogItem
-import LogViewItem
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.app.Application.ActivityLifecycleCallbacks
 import android.content.Context
 import android.graphics.PixelFormat
-import android.media.Image
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.widget.ImageButton
 import androidx.constraintlayout.widget.Group
-import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.ref.WeakReference
-import java.time.Instant
-import androidx.core.view.isVisible
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlin.math.log
 
 fun onMethodLogged(className: String, methodName: String) {
     MethodLogger.onMethodLogged(LogItem(className, methodName))
@@ -54,8 +42,8 @@ object MethodLogger {
     private var adapter: SimpleTextAdapter? = null
     private var scope: CoroutineScope? = null
     private var recyclerView: RecyclerView? = null
-    private var groupOfViews : Group? = null
-    private var logListToggleButton : LogListToggleButton? = null
+    private var groupOfViews: Group? = null
+    private var logListToggleButton: LogListToggleButton? = null
 
 
     fun setUpLogger(appContext: Application) {
@@ -101,7 +89,7 @@ object MethodLogger {
         observeItems()
     }
 
-    private fun setUpLoggerView(){
+    private fun setUpLoggerView() {
         overlayView = LayoutInflater.from(context!!).inflate(R.layout.layout_list2, null)
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
@@ -125,9 +113,9 @@ object MethodLogger {
         windowManager?.addView(overlayView, params)
     }
 
-    private fun setUpToggleView(){
+    private fun setUpToggleView() {
         val rootView = LayoutInflater.from(context!!).inflate(R.layout.view_toggle, null)
-        logListToggleButton =  rootView as LogListToggleButton
+        logListToggleButton = rootView as LogListToggleButton
         logListToggleButton?.setUpWithWindowManager(windowManager)
 
         logListToggleButton?.setOnClickListener {
@@ -135,16 +123,16 @@ object MethodLogger {
                 if (it.isVisible) {
                     logListToggleButton?.setImageResource(R.drawable.baseline_open_in_new_24)
                     it.visibility = View.GONE
-                    with(overlayView?.layoutParams as WindowManager.LayoutParams){
+                    with(overlayView?.layoutParams as WindowManager.LayoutParams) {
                         flags = flags or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                        windowManager?.updateViewLayout(overlayView,this)
+                        windowManager?.updateViewLayout(overlayView, this)
                     }
                 } else {
                     it.visibility = View.VISIBLE
                     logListToggleButton?.setImageResource(R.drawable.baseline_close_24)
-                    with(overlayView?.layoutParams as WindowManager.LayoutParams){
+                    with(overlayView?.layoutParams as WindowManager.LayoutParams) {
                         flags = flags and WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE.inv()
-                        windowManager?.updateViewLayout(overlayView,this)
+                        windowManager?.updateViewLayout(overlayView, this)
                     }
                 }
             }
@@ -154,9 +142,9 @@ object MethodLogger {
     private fun observeItems() {
         scope = CoroutineScope(Dispatchers.Main)
         scope?.launch {
-            itemFlow.groupedDebounce(1000,20).collect { newList : List<Any> ->
+            itemFlow.groupedDebounce(1000, 20).collect { newList: List<Any> ->
                 scope?.launch {
-                    withContext(Dispatchers.Main){
+                    withContext(Dispatchers.Main) {
                         adapter?.submitList(newList)
                     }
                 }

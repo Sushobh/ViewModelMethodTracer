@@ -8,9 +8,10 @@ internal data class LogViewItem(
 
 internal data class LogViewItemHeader(val className: String)
 
-internal fun LogViewItem.displayableClassName() : String {
+internal fun LogViewItem.displayableClassName(): String {
     return className.split("/").last()
 }
+
 internal open class LogItem(
     open val className: String,
     open val methodName: String,

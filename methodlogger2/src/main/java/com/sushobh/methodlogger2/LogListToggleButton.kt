@@ -8,18 +8,12 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
-import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
-import android.widget.ImageButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
 
 
 class LogListToggleButton : androidx.appcompat.widget.AppCompatImageButton, OnTouchListener {
-    private var windowManager : WindowManager? = null
-    private var windowManagerParams :  WindowManager.LayoutParams? = null
+    private var windowManager: WindowManager? = null
+    private var windowManagerParams: WindowManager.LayoutParams? = null
 
     constructor(context: Context) : super(context) {
 
@@ -41,35 +35,37 @@ class LogListToggleButton : androidx.appcompat.widget.AppCompatImageButton, OnTo
         setOnTouchListener(this)
     }
 
-    val gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
-        override fun onDoubleTap(e: MotionEvent): Boolean {
-            togglePositioning(this@LogListToggleButton)
-            return true
-        }
+    val gestureDetector =
+        GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onDoubleTap(e: MotionEvent): Boolean {
+                togglePositioning(this@LogListToggleButton)
+                return true
+            }
 
-        override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
-            performClick()
-            return true
-        }
-    })
+            override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
+                performClick()
+                return true
+            }
+        })
 
 
-    private fun togglePlacement(){
+    private fun togglePlacement() {
         val windowManagerParams = (layoutParams as WindowManager.LayoutParams)
         val gravity = windowManagerParams.gravity
         when {
             gravity and Gravity.START == Gravity.START -> {
                 windowManagerParams.gravity = Gravity.END
-                windowManager?.updateViewLayout(this,windowManagerParams)
+                windowManager?.updateViewLayout(this, windowManagerParams)
             }
+
             gravity and Gravity.END == Gravity.END -> {
                 windowManagerParams.gravity = Gravity.START
-                windowManager?.updateViewLayout(this,windowManagerParams)
+                windowManager?.updateViewLayout(this, windowManagerParams)
             }
         }
     }
 
-    fun setUpWithWindowManager(windowManager: WindowManager?){
+    fun setUpWithWindowManager(windowManager: WindowManager?) {
         this.windowManager = windowManager
         windowManagerParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
@@ -89,7 +85,7 @@ class LogListToggleButton : androidx.appcompat.widget.AppCompatImageButton, OnTo
         if (layoutParams is WindowManager.LayoutParams) {
             val g = layoutParams.gravity
 
-            layoutParams.gravity = when(g) {
+            layoutParams.gravity = when (g) {
                 Gravity.START -> Gravity.TOP or Gravity.START
                 Gravity.TOP or Gravity.START -> Gravity.TOP or Gravity.END
                 Gravity.TOP or Gravity.END -> Gravity.END
@@ -100,7 +96,7 @@ class LogListToggleButton : androidx.appcompat.widget.AppCompatImageButton, OnTo
             }
 
             view.layoutParams = layoutParams
-            windowManager?.updateViewLayout(this,layoutParams)
+            windowManager?.updateViewLayout(this, layoutParams)
         }
     }
 

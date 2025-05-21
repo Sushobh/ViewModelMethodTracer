@@ -1,6 +1,8 @@
 package com.sushobh.loggerplugin
 
-import org.objectweb.asm.*
+import org.objectweb.asm.ClassVisitor
+import org.objectweb.asm.MethodVisitor
+import org.objectweb.asm.Opcodes
 
 class ViewModelMethodLoggerVisitor(
     classVisitor: ClassVisitor

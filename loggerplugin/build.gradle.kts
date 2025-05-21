@@ -1,5 +1,5 @@
-
 import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     id("java-library")
     alias(libs.plugins.jetbrains.kotlin.jvm)

@@ -4,12 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,8 +25,8 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
 
     val viewModel: MainViewModel = MainViewModel()
-    val launcherViewModel : LauncherViewModel = LauncherViewModel()
-    val loginViewModel : LoginViewModel = LoginViewModel()
+    val launcherViewModel: LauncherViewModel = LauncherViewModel()
+    val loginViewModel: LoginViewModel = LoginViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,13 +36,13 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 while (true) {
-                     delay(2000)
-                     viewModel.mainRandomMethodName1()
-                     viewModel.mainRandomMethodName2()
-                     launcherViewModel.launchRandomMethodName1()
-                     launcherViewModel.launchRandomMethodName2()
-                     loginViewModel.loginRandomMethodName1()
-                     loginViewModel.loginRandomMethodName2()
+                    delay(2000)
+                    viewModel.mainRandomMethodName1()
+                    viewModel.mainRandomMethodName2()
+                    launcherViewModel.launchRandomMethodName1()
+                    launcherViewModel.launchRandomMethodName2()
+                    loginViewModel.loginRandomMethodName1()
+                    loginViewModel.loginRandomMethodName2()
                 }
             }
         }
@@ -53,14 +51,20 @@ class MainActivity : ComponentActivity() {
             setContent {
                 DemoTheme {
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                        Column(modifier = Modifier.fillMaxSize() , verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally ) {
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
                             Greeting(
                                 name = "Android",
-                                modifier = Modifier.padding(innerPadding).clickable {
-                                    viewModel.mainRandomMethodName5()
-                                    loginViewModel.loginRandomMethodName5()
-                                    launcherViewModel.launchRandomMethodName5()
-                                }
+                                modifier = Modifier
+                                    .padding(innerPadding)
+                                    .clickable {
+                                        viewModel.mainRandomMethodName5()
+                                        loginViewModel.loginRandomMethodName5()
+                                        launcherViewModel.launchRandomMethodName5()
+                                    }
                             )
                         }
                     }

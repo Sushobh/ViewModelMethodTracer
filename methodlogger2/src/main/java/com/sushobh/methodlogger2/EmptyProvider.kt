@@ -44,7 +44,7 @@ internal class AppContextProvider : EmptyProvider() {
     override fun onCreate(): Boolean {
         val ctx = context
         if (ctx is Application) {
-           MethodLogger.setUpLogger(ctx)
+            MethodLogger.setUpLogger(ctx)
         }
         return true
     }

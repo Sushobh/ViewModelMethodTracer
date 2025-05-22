@@ -1,6 +1,7 @@
-package com.sushobh.methodlogger2
+package com.sushobh.methodlogger2.toggleview
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.PixelFormat
 import android.util.AttributeSet
 import android.view.GestureDetector
@@ -9,33 +10,52 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import android.view.WindowManager
+import android.widget.ImageButton
+import com.sushobh.methodlogger2.R
+import com.sushobh.methodlogger2.common.LifecycleScopedView
 
 
-class LogListToggleButton : androidx.appcompat.widget.AppCompatImageButton, OnTouchListener {
+class LogListToggleButton @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : LifecycleScopedView(context, attrs, defStyleAttr), OnTouchListener {
     private var windowManager: WindowManager? = null
     private var windowManagerParams: WindowManager.LayoutParams? = null
 
-    constructor(context: Context) : super(context) {
 
+    fun attachToWindowManger(windowManager: WindowManager?) {
+        this.windowManager = windowManager
+        inflate(context, R.layout.view_toggle, this)
+        windowManagerParams = WindowManager.LayoutParams(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT, // Thin view height
+            WindowManager.LayoutParams.TYPE_APPLICATION, // App-local only
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+            PixelFormat.TRANSLUCENT
+        )
+        windowManagerParams?.gravity = Gravity.START
+        windowManager?.addView(this, windowManagerParams)
+        setBackgroundColor(Color.GREEN)
+        super.onAttach()
     }
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-
-    }
-
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
-
+    fun detachFromWindowManager() {
+        super.onDetach()
+        windowManager?.removeView(this)
     }
 
     init {
         setOnTouchListener(this)
     }
 
-    val gestureDetector =
+    fun setImageResource(resId: Int) {
+        findViewById<ImageButton>(R.id.switch_button).setImageResource(resId)
+    }
+
+    private val gestureDetector =
         GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
             override fun onDoubleTap(e: MotionEvent): Boolean {
                 togglePositioning(this@LogListToggleButton)
@@ -49,38 +69,7 @@ class LogListToggleButton : androidx.appcompat.widget.AppCompatImageButton, OnTo
         })
 
 
-    private fun togglePlacement() {
-        val windowManagerParams = (layoutParams as WindowManager.LayoutParams)
-        val gravity = windowManagerParams.gravity
-        when {
-            gravity and Gravity.START == Gravity.START -> {
-                windowManagerParams.gravity = Gravity.END
-                windowManager?.updateViewLayout(this, windowManagerParams)
-            }
-
-            gravity and Gravity.END == Gravity.END -> {
-                windowManagerParams.gravity = Gravity.START
-                windowManager?.updateViewLayout(this, windowManagerParams)
-            }
-        }
-    }
-
-    fun setUpWithWindowManager(windowManager: WindowManager?) {
-        this.windowManager = windowManager
-        windowManagerParams = WindowManager.LayoutParams(
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT, // Thin view height
-            WindowManager.LayoutParams.TYPE_APPLICATION, // App-local only
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
-            PixelFormat.TRANSLUCENT
-        )
-        windowManagerParams?.gravity = Gravity.START
-        windowManager?.addView(rootView, windowManagerParams)
-    }
-
-    fun togglePositioning(view: View) {
+    private fun togglePositioning(view: View) {
         val layoutParams = view.layoutParams
         if (layoutParams is WindowManager.LayoutParams) {
             val g = layoutParams.gravity
@@ -103,6 +92,14 @@ class LogListToggleButton : androidx.appcompat.widget.AppCompatImageButton, OnTo
     override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
         p1?.let { gestureDetector.onTouchEvent(it) }
         return true
+    }
+
+    override fun onViewCreated() {
+
+    }
+
+    override fun onViewDestroyed() {
+
     }
 
 }

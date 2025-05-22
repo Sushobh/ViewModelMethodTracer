@@ -28,8 +28,17 @@ class ViewModelMethodLoggerVisitor(
         exceptions: Array<out String>?
     ): MethodVisitor {
         val mv = super.visitMethod(access, name, descriptor, signature, exceptions)
-
-        if (!isViewModel || name == "<init>" || name == "<clinit>" || (access and Opcodes.ACC_PUBLIC == 0)) {
+        val isUserWrittenPublicMethod =
+            (access and Opcodes.ACC_PUBLIC) != 0 &&
+                    (access and Opcodes.ACC_SYNTHETIC) == 0 &&
+                    (access and Opcodes.ACC_BRIDGE) == 0 &&
+                    name != "<init>" &&
+                    name != "<clinit>" &&
+                    !name.startsWith("access$") &&
+                    !name.startsWith("lambda$") &&
+                    !name.contains("\$default") &&
+                    !name.startsWith("component")
+        if (!isViewModel || name == "<init>" || name == "<clinit>" || !isUserWrittenPublicMethod) {
             return mv
         }
 

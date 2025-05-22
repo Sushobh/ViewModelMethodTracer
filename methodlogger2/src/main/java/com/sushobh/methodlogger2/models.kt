@@ -8,6 +8,12 @@ internal data class LogViewItem(
 
 internal data class LogViewItemHeader(val className: String)
 
+
+internal sealed class LogViewItemType {
+    data class Item(val logViewItem: LogViewItem) : LogViewItemType()
+    data class Header(val logViewItemHeader: LogViewItemHeader) : LogViewItemType()
+}
+
 internal fun LogViewItem.displayableClassName(): String {
     return className.split("/").last()
 }

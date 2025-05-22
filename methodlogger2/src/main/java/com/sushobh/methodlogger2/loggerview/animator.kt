@@ -1,4 +1,4 @@
-package com.sushobh.methodlogger2
+package com.sushobh.methodlogger2.loggerview
 
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView

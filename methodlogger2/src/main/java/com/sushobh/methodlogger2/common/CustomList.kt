@@ -1,4 +1,4 @@
-package com.sushobh.methodlogger2
+package com.sushobh.methodlogger2.common
 
 internal class DoublyLinkedList<T> {
 

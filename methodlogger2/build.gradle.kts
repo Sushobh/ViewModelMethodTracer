@@ -54,7 +54,7 @@ mavenPublishing {
 }
 
 mavenPublishing {
-    coordinates("com.sushobh", "method-logger", "1.0.5")
+    coordinates("com.sushobh", "method-logger", "1.0.7")
 
     pom {
         name.set("Method Logger")
